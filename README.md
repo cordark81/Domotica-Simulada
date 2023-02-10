@@ -1,3 +1,3 @@
 # Domotica-Simulada
-# Asignatura Cliente
-# Proyecto final segundo trimestre
+Asignatura Cliente
+Proyecto final segundo trimestre
