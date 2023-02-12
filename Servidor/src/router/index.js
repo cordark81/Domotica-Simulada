@@ -16,7 +16,9 @@ const router = createRouter({
       meta: {
         requiresAuth: true
       }
-    }
+    },
+    { path: '/localhost:5174/', name: 'info' }
+
   ]
 })
 

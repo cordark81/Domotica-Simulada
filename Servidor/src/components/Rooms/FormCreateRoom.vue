@@ -5,7 +5,7 @@
             <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" @submit.prevent="checkUserPassword">
                 <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Elige un
                     tipo</label>
-                <select v-model="select" id="countries"
+                <select v-model="select" id="tipos"
                     class="mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     <option value="sensor">Sensor</option>
                     <option value="ejecutor">Ejecutor</option>

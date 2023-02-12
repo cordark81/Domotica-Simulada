@@ -1,5 +1,5 @@
 <template>
-    <div class="mx-5 mb-5">
+    <div class="mx-5 mb-5" @click="info(idDevice)">
         <div class="bg-white container flex flex-wrap items-center justify-between rounded">
             <div class="flex flex-row w-full md:block md:w-auto" id="navbar-default">
                 <ul v-if="device.tipo == 'sensor'"
@@ -37,8 +37,10 @@
                             {{ device.estado }}</p>
                     </li>
                     <li>
-                        <button @click="changeStatus" class="hover:bg-slate-100 rounded"><img
-                                src="../../assets/Imagenes/onoff-removebg-preview.png" alt="on/off"></button>
+                        <div>
+                            <button @click.stop="changeStatus" class="hover:bg-slate-100 rounded"><img
+                                    src="../../assets/Imagenes/onoff-removebg-preview.png" alt="on/off"></button>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -50,7 +52,7 @@
 
 <script setup>
 
-import { actualizaDispositivo } from '../../utils/firebase';
+import { actualizaDispositivo } from '../../utils/firebase'
 
 const props = defineProps({
     idDevice: { type: String },
@@ -64,5 +66,8 @@ const changeStatus = async () => {
     await actualizaDispositivo("dispositivos", props.idDevice, { nombre: props.device.nombre, sala: props.device.sala, estado: status, tipo: props.device.tipo });
 
 }
+
+const info = (id) => window.open(`http://localhost:5174/${id}`, '_blank')
+
 </script>
 

@@ -17,7 +17,7 @@
             <img src="../assets/Imagenes/18297.png" alt="papelera">
         </div>
     </div>
-    <div class="flex flex-wrap justify-center gap-7">
+    <div class="flex flex-wrap justify-center gap-7 mt-14">
         <CardRoom v-for="room in rooms" :nameRoom="room.nombre" :device="room.device" />
 
     </div>
@@ -93,10 +93,6 @@ const onDrop = async (event) => {
     }
 
 }
-
-
-//export const borraDispositivo = (ref, id) => deleteDoc(doc(db,ref,id))
-
 
 </script>
 

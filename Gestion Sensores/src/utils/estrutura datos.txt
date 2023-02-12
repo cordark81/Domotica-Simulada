@@ -1,0 +1,19 @@
+
+En JSON
+
+{"Sala": 
+{ "nombre": "Sala 2", "dispositivos": 
+[{ "nombre": "Dispositivo 1", "tipo": "sensor", "temp": 25 }, 
+{ "nombre": "Dispositivo 2", "tipo": "sensor", "temp": 27 }, 
+{ "nombre": "Dispositivo 3", "tipo": "sensor", "temp": 28 },
+{"nombre": "Dipositivo 4", "tipo" : "ejecutor", "estado": "on"}
+] } }
+
+En distintas coleccion
+
+salas {nombre:""}
+dispositivos:
+//tipo sensor
+{data:{sala:"",nombre:"",temp:"",tipo:""},id:id}
+//tipo ejecutor
+{data:{sala:"",nombre:"",estado:"",tipo:""},id:id}
