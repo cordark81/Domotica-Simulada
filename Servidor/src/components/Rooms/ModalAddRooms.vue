@@ -38,7 +38,7 @@
                                     <div class="w-full text-center">
                                         <div>
                                             <!--zona de introducir formulario-->
-                                            
+                                            <FormCreateRoom  @CloseModal="closeModal" :nameRoom="nameRoom"/>
                                         </div>
                                     </div>
                                 </div>
@@ -52,6 +52,21 @@
 </template>
 
 <script setup>
+
+import FormCreateRoom from './FormCreateRoom.vue';
+
+const props = defineProps({
+    nameRoom: { type: String }    
+})
+
+
+
+const emits = defineEmits(["CloseModal"])
+
+const closeModal = () => {
+    emits("CloseModal")
+    
+}
 
 </script>
 

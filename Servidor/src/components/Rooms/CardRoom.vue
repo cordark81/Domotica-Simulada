@@ -1,26 +1,44 @@
 <template>
-    <div class="max-w-sm rounded-2xl overflow-hidden shadow-lg bg-blue-600 w-72">
+    <div class="max-w-sm rounded-2xl overflow-hidden shadow-lg bg-blue-600 w-96 h-auto">
         <div class="flex flex-row justify-center">
             <img class="w-16 h-16 ml-5 mt-5" src="../../assets/Imagenes/4792184.png" alt="Habitacion">
-            <div class="font-bold text-xl mb-2 ml-5 p-6 mt-5">{{ name }}</div>
+            <div class="font-bold text-xl mb-2 ml-5 p-6 mt-5">{{ nameRoom }}</div>
         </div>
         <div class="px-6 py-4">
             <p class="text-gray-700 text-base">
-                Sensores
+                Dispositivos
             </p>
         </div>
+        <DeviceRoom v-for="dev in device" :device="dev.data" :idDevice="dev.id" draggable="true"
+            @dragstart="startDrag($event, dev)" />
         <div class="px-6 pt-4 pb-2 flex">
-            <button class="w-full text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Añadir</button>
-            <button class="ml-5 w-full text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Borrar</button>
+            <button @click="dialog = true"
+                class="w-full text-white bg-orange-400 hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Añadir</button>
         </div>
     </div>
+    <ModalAddRooms v-show="dialog" @CloseModal="dialog = false" :nameRoom="nameRoom" />
 </template>
 
 <script setup>
 
+import DeviceRoom from './DeviceRoom.vue';
+import ModalAddRooms from './ModalAddRooms.vue';
+import { ref } from "vue";
+
+const dialog = ref();
+
 const props = defineProps({
-	name: {type: String}
+    nameRoom: { type: String },
+    device: { type: Array }
 })
+
+// parte drag and drop
+
+const startDrag = (event, item) => {
+    event.dataTransfer.dropEffect = "move"
+    event.dataTransfer.effectAllowed = "move"
+    event.dataTransfer.setData("itemID", item.id)
+}
 
 
 
