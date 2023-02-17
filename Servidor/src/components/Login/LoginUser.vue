@@ -58,57 +58,55 @@
 
 <script setup>
 
+import { ref } from 'vue'
+import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from '@firebase/auth'
+import { useRouter } from 'vue-router'
+import CreateUser from './ModalCreateUser.vue'
 
-import { ref } from "vue";
-import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "@firebase/auth";
-import { useRouter } from "vue-router";
-import CreateUser from "./ModalCreateUser.vue";
+const router = useRouter()
+const email = ref('')
+const password = ref('')
+const erroMsg = ref()
+const dialog = ref()
 
-
-const router = useRouter();
-const email = ref("");
-const password = ref("");
-const erroMsg = ref();
-const dialog = ref();
-
+// Chekea la password del usuario registrado y recogemos el error en caso de cumplir requisitos
 
 const checkUserPassword = () => {
-    signInWithEmailAndPassword(getAuth(), email.value, password.value)
-        .then((data) => {
-            console.log("Entrada exitosa");
-            router.push('/dashboard');
-        })
-        .catch((error) => {
-            console.log(error.code);
-            switch (error.code) {
-                case "auth/invalid-email":
-                    erroMsg.value = "E-mail incorrecto";
-                    break;
-                case "auth/user-not-found":
-                    erroMsg.value = "No se encuentra cuenta para ese Email";
-                    break;
-                case "auth/wrong-password":
-                    erroMsg.value = "Contraseña incorrecta";
-                    break;
-                default:
-                    erroMsg.value = "E-mail o password incorrecto";
-                    break;
-            }
-        })
-
+  signInWithEmailAndPassword(getAuth(), email.value, password.value)
+    .then((data) => {
+      console.log('Entrada exitosa')
+      router.push('/dashboard')
+    })
+    .catch((error) => {
+      console.log(error.code)
+      switch (error.code) {
+        case 'auth/invalid-email':
+          erroMsg.value = 'E-mail incorrecto'
+          break
+        case 'auth/user-not-found':
+          erroMsg.value = 'No se encuentra cuenta para ese Email'
+          break
+        case 'auth/wrong-password':
+          erroMsg.value = 'Contraseña incorrecta'
+          break
+        default:
+          erroMsg.value = 'E-mail o password incorrecto'
+          break
+      }
+    })
 }
 
+// Para conexion con google crea un Popup
+
 const signInWithGoogle = () => {
-    const provider = new GoogleAuthProvider();
-    signInWithPopup(getAuth(),provider)
-    .then((result)=>{
-        
-        router.push("/dashboard");
+  const provider = new GoogleAuthProvider()
+  signInWithPopup(getAuth(), provider)
+    .then((result) => {
+      router.push('/dashboard')
     })
-    .catch((error)=>{
-         console.log(error);
-    });
-};
+    .catch((error) => {
+      console.log(error)
+    })
+}
 
 </script>
-

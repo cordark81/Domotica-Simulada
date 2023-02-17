@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="flex flex-wrap justify-center gap-7 mt-14">
-        <CardRoom v-for="room in rooms" :nameRoom="room.nombre" :device="room.device" />
+        <CardRoom v-for="room in rooms" :key="room.nombre" :nameRoom="room.nombre" :device="room.device" />
 
     </div>
 
@@ -40,59 +40,54 @@ const isLoggedIn = ref(false)
 let auth
 
 // nos mantiene actualizado los contenedores
+
 onMounted(async () => {
-    auth = getAuth()
-    onAuthStateChanged(auth, (user) => {
-        (user) ? isLoggedIn.value = true : isLoggedIn.value = false
+  auth = getAuth()
+  onAuthStateChanged(auth, (user) => {
+    (user) ? isLoggedIn.value = true : isLoggedIn.value = false
+  })
+  await onDameSalas('salas', docs => {
+    rooms.value = []
+    docs.forEach((doc) => {
+      rooms.value.push({ nombre: doc.data().nombre, device: [] })
     })
-    await onDameSalas("salas", docs => {
-        rooms.value = []
-        docs.forEach((doc) => {
-            rooms.value.push({ nombre: doc.data().nombre, device: [] })
+    onDameSalas('dispositivos', docs => {
+      cleanDevice(rooms.value)
+      docs.forEach((doc) => {
+        rooms.value.map((room, index) => {
+          if (room.nombre === doc.data().sala) {
+            rooms.value[index].device.push({ data: doc.data(), id: doc.id })
+          }
         })
-        onDameSalas("dispositivos", docs => {
-            cleanDevice(rooms.value)
-            docs.forEach((doc) => {
-                rooms.value.map((room, index) => {
-                    if (room.nombre === doc.data().sala) {
-                        rooms.value[index].device.push({ data: doc.data(), id: doc.id })
-                    }
-                })
-            })
-        })
+      })
     })
+  })
 })
 
-// nos desconecta de la sesión
+// Nos desconecta de la sesión
 
-const handleSignOut = () => {
-    signOut(auth).then(() => {
-        router.push("/");
+const handleSignOut = () => signOut(auth).then(() => router.push('/'))
 
-    })
-}
+// Limpia la habitación en la toma de datos
 
 const cleanDevice = (rooms) => {
-    rooms.forEach((el) => {
-        el.device = [];
-    })
+  rooms.forEach((el) => {
+    el.device = []
+  })
 }
 
-const addRoom = async() => addDevice("salas",{nombre:newRoom.value})
+const addRoom = async () => addDevice('salas', { nombre: newRoom.value })
 
-//drop 
+// Drop
 
 const onDrop = async (event) => {
-    const itemID = event.dataTransfer.getData("itemID");
-    try {
-        await borraDispositivo("dispositivos", itemID);
-    } catch (error) {
-        console.log(error);
-        aler("error borrando dispositivo")
-
-    }
-
+  const itemID = event.dataTransfer.getData('itemID')
+  try {
+    await borraDispositivo('dispositivos', itemID)
+  } catch (error) {
+    console.log(error)
+    alert('error borrando dispositivo')
+  }
 }
 
 </script>
-

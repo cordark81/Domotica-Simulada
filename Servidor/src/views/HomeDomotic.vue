@@ -6,7 +6,6 @@
 
 <script setup>
 
-import WelcomeBanner from '../components/WelcomeBanner.vue';
-
+import WelcomeBanner from '../components/WelcomeBanner.vue'
 
 </script>

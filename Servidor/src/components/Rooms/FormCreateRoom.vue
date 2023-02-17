@@ -40,38 +40,33 @@
 
 <script setup>
 
-import { ref } from "vue";
-import { addDevice } from '../../utils/firebase';
+import { ref } from 'vue'
+import { addDevice } from '../../utils/firebase'
 
-const select = ref();
-const nameDevice = ref();
-const temp = ref(25);
-const status = ref("off");
-const room = ref(props.nameRoom)
+const select = ref()
+const nameDevice = ref()
+const temp = ref(25)
+const status = ref('off')
 
 const props = defineProps({
-    nameRoom: { type: String },
+  nameRoom: { type: String }
 })
 
-const emits = defineEmits(["CloseModal"])
+const room = ref(props.nameRoom)
 
-const closeModal = () => {
-    emits("CloseModal")
+const emits = defineEmits(['CloseModal'])
 
-}
+const closeModal = () => emits('CloseModal')
 
 const acceptDevice = async () => {
-    try {
-        select.value == "sensor" ?
-            await addDevice("dispositivos", { nombre: nameDevice.value, sala: room.value, temp: temp.value, tipo: select.value }) :
-            await addDevice("dispositivos", { nombre: nameDevice.value, sala: room.value, estado: status.value, tipo: select.value });
-        closeModal();
-    } catch (error) {
-        alert(error);
-    }
-
+  try {
+    select.value === 'sensor'
+      ? await addDevice('dispositivos', { nombre: nameDevice.value, sala: room.value, temp: temp.value, tipo: select.value })
+      : await addDevice('dispositivos', { nombre: nameDevice.value, sala: room.value, estado: status.value, tipo: select.value })
+    closeModal()
+  } catch (error) {
+    alert(error)
+  }
 }
 
-
 </script>
-

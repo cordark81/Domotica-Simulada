@@ -2,7 +2,7 @@
     <h1 class="mb-10 text-lg">Nuevo usuario</h1>
     <div>
         <div class="w-full max-w-xs ml-8">
-            <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" @submit.prevent="checkUserPassword">
+            <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" @submit.prevent="createNewUser">
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
                         Email
@@ -42,41 +42,38 @@
 
 <script setup>
 
-import { ref } from "vue";
-import { getAuth, createUserWithEmailAndPassword } from "@firebase/auth";
-import { useRouter } from "vue-router";
+import { ref } from 'vue'
+import { getAuth, createUserWithEmailAndPassword } from '@firebase/auth'
+import { useRouter } from 'vue-router'
 
-const router = useRouter();
-const email = ref("");
-const password = ref("");
+const router = useRouter()
+const email = ref('')
+const password = ref('')
 
-
-const emits = defineEmits(["CloseModal"])
+const emits = defineEmits(['"CloseModal'])
 
 const closeModal = () => {
-    emits("CloseModal")
-    resetNewUser();
+  emits('CloseModal')
+  resetNewUser()
 }
 
-const checkUserPassword = () => {
-    createUserWithEmailAndPassword(getAuth(), email.value, password.value)
-        .then((data) => {
-            console.log("Autentificación exitosa");
-            router.push('/dashboard');
-        })
-        .catch((error) => {
-            console.log(error.code);
-            alert(error.message);
-        })
+// Crea un nuevo usuario en la autentificacion de firebase
 
+const createNewUser = () => {
+  createUserWithEmailAndPassword(getAuth(), email.value, password.value)
+    .then((data) => {
+      console.log('Autentificación exitosa')
+      router.push('/dashboard')
+    })
+    .catch((error) => {
+      console.log(error.code)
+      alert(error.message)
+    })
 }
 
 const resetNewUser = () => {
-
-    email.value = "";
-    password.value = "";
-
+  email.value = ''
+  password.value = ''
 }
 
 </script>
-

@@ -53,20 +53,15 @@
 
 <script setup>
 
-import FormCreateRoom from './FormCreateRoom.vue';
+import FormCreateRoom from './FormCreateRoom.vue'
 
-const props = defineProps({
-    nameRoom: { type: String }    
+defineProps({
+  nameRoom: { type: String }
 })
 
+const emits = defineEmits(['CloseModal'])
 
-
-const emits = defineEmits(["CloseModal"])
-
-const closeModal = () => {
-    emits("CloseModal")
-    
-}
+const closeModal = () => emits('CloseModal')
 
 </script>
 

@@ -9,7 +9,7 @@
                 Dispositivos
             </p>
         </div>
-        <DeviceRoom v-for="dev in device" :device="dev.data" :idDevice="dev.id" draggable="true"
+        <DeviceRoom v-for="dev in device" :key="dev.id" :device="dev.data" :idDevice="dev.id" draggable="true"
             @dragstart="startDrag($event, dev)" />
         <div class="px-6 pt-4 pb-2 flex">
             <button @click="dialog = true"
@@ -21,26 +21,23 @@
 
 <script setup>
 
-import DeviceRoom from './DeviceRoom.vue';
-import ModalAddRooms from './ModalAddRooms.vue';
-import { ref } from "vue";
+import DeviceRoom from './DeviceRoom.vue'
+import ModalAddRooms from './ModalAddRooms.vue'
+import { ref } from 'vue'
 
-const dialog = ref();
+const dialog = ref()
 
-const props = defineProps({
-    nameRoom: { type: String },
-    device: { type: Array }
+defineProps({
+  nameRoom: { type: String },
+  device: { type: Array }
 })
 
-// parte drag and drop
+// Drag and drop
 
 const startDrag = (event, item) => {
-    event.dataTransfer.dropEffect = "move"
-    event.dataTransfer.effectAllowed = "move"
-    event.dataTransfer.setData("itemID", item.id)
+  event.dataTransfer.dropEffect = 'move'
+  event.dataTransfer.effectAllowed = 'move'
+  event.dataTransfer.setData('itemID', item.id)
 }
 
-
-
 </script>
-

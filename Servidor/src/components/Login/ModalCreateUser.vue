@@ -53,14 +53,11 @@
 
 <script setup>
 
-import FormCreateUser from './FormCreateUser.vue';
+import FormCreateUser from './FormCreateUser.vue'
 
-const emits = defineEmits(["CloseModal"])
+const emits = defineEmits(['CloseModal'])
 
-const closeModal = () => {
-    emits("CloseModal")
-
-}
+const closeModal = () => emits('CloseModal')
 
 </script>
 

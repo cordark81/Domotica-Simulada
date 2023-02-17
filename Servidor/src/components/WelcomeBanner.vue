@@ -51,19 +51,19 @@
 
 <script setup>
 
-import { ref } from 'vue';
-import LoginUser from './Login/LoginUser.vue';
+import { ref } from 'vue'
+import LoginUser from './Login/LoginUser.vue'
 
-const howIsModal = ref();
+const howIsModal = ref()
 
 const links = [
-    { name: 'Entrar a la aplicación en un futuro', href: '/' },
-
+  { name: 'Entrar a la aplicación en un futuro', href: '/' }
 ]
 const stats = [
-    { name: 'Offices worldwide', value: '12' },
-    { name: 'Full-time colleagues', value: '300+' },
-    { name: 'Hours per week', value: '40' },
-    { name: 'Paid time off', value: 'Unlimited' },
+  { name: 'Offices worldwide', value: '12' },
+  { name: 'Full-time colleagues', value: '300+' },
+  { name: 'Hours per week', value: '40' },
+  { name: 'Paid time off', value: 'Unlimited' }
 ]
+
 </script>
