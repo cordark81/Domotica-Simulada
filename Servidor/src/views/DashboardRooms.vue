@@ -54,7 +54,7 @@ onMounted(async () => {
     onDameSalas('dispositivos', docs => {
       cleanDevice(rooms.value)
       docs.forEach((doc) => {
-        rooms.value.map((room, index) => {
+        rooms.value.forEach((room, index) => {
           if (room.nombre === doc.data().sala) {
             rooms.value[index].device.push({ data: doc.data(), id: doc.id })
           }

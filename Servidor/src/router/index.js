@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import Home from '../views/Home.vue'
-import Dashboard from '../views/Dashboard.vue'
+import Home from '../views/HomeDomotic.vue'
+import Dashboard from '../views/DashboardRooms.vue'
 import Login from '../components/Login/ModalCreateUser.vue'
 
 const router = createRouter({

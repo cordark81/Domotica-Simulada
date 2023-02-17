@@ -68,51 +68,43 @@
 
 <script setup>
 
+import { ref, onBeforeMount, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { onActualizaDispositivo, actualizaDispositivo } from '../utils/firebase'
 
-import { ref, onBeforeMount, computed } from "vue"
-import { useRoute } from "vue-router"
-import { onActualizaDispositivo, actualizaDispositivo } from "../utils/firebase";
-
-
-const route = useRoute();
-const temp = ref();
-const messageInfo = ref();
-let device = ref();
-
+const route = useRoute()
+const temp = ref()
+const messageInfo = ref()
+const device = ref()
 
 onBeforeMount(async () => {
-    try {
-        await onActualizaDispositivo("dispositivos", route.params.id, docs => {
-
-            device.value = docs.data();
-            if (device.value.tipo === "sensor")
-                temp.value = docs.data().temp;
-        });
-    } catch (error) {
-        alert(error);
-    }
-
+  try {
+    await onActualizaDispositivo('dispositivos', route.params.id, docs => {
+      device.value = docs.data()
+      if (device.value.tipo === 'sensor') {
+        temp.value = docs.data().temp
+      }
+    })
+  } catch (error) {
+    alert(error)
+  }
 })
 
-const changeTemp = computed(() => device.value.temp === temp.value);
+const changeTemp = computed(() => device.value.temp === temp.value)
 
 const changeStatusTemp = async () => {
-
-    await actualizaDispositivo("dispositivos", route.params.id, { nombre: device.value.nombre, sala: device.value.sala, temp: temp.value, tipo: device.value.tipo });
-    alert("actualizado");
-
+  await actualizaDispositivo('dispositivos', route.params.id, { nombre: device.value.nombre, sala: device.value.sala, temp: temp.value, tipo: device.value.tipo })
+  alert('actualizado')
 }
 
 const changeStatusOnOff = async () => {
-
-    let status;
-    device.value.estado == "on" ? status = "off" : status = "on";
-    await actualizaDispositivo("dispositivos", route.params.id, { nombre: device.value.nombre, sala: device.value.sala, estado: status, tipo: device.value.tipo });
-    messageInfo.value = "Cambiando de estado";
-    setTimeout(() => {
-        messageInfo.value = "";
-    }, 2000);
-
+  let status
+  device.value.estado === 'on' ? status = 'off' : status = 'on'
+  await actualizaDispositivo('dispositivos', route.params.id, { nombre: device.value.nombre, sala: device.value.sala, estado: status, tipo: device.value.tipo })
+  messageInfo.value = 'Cambiando de estado'
+  setTimeout(() => {
+    messageInfo.value = ''
+  }, 2000)
 }
 
 </script>

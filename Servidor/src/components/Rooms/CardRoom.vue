@@ -29,7 +29,7 @@ const dialog = ref()
 
 defineProps({
   nameRoom: { type: String },
-  device: { type: Array }
+  device: { type: Object }
 })
 
 // Drag and drop
