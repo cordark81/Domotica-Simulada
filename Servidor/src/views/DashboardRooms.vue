@@ -18,8 +18,7 @@
         </div>
     </div>
     <div class="flex flex-wrap justify-center gap-7 mt-14">
-        <CardRoom v-for="room in rooms" :key="room.nombre" :nameRoom="room.nombre" :device="room.device" />
-
+        <CardRoom v-for="room in rooms" :key="room.nombre" :nameRoom="room.nombre" :device="room.device" :idRoom="room.id" :rooms="rooms" />
     </div>
 
 </template>
@@ -49,7 +48,7 @@ onMounted(async () => {
   await onDameSalas('salas', docs => {
     rooms.value = []
     docs.forEach((doc) => {
-      rooms.value.push({ nombre: doc.data().nombre, device: [] })
+      rooms.value.push({ id: doc.id, nombre: doc.data().nombre, device: [] })
     })
     onDameSalas('dispositivos', docs => {
       cleanDevice(rooms.value)
@@ -68,13 +67,9 @@ onMounted(async () => {
 
 const handleSignOut = () => signOut(auth).then(() => router.push('/'))
 
-// Limpia la habitación en la toma de datos
+// Reset de dispositivos en la habitación
 
-const cleanDevice = (rooms) => {
-  rooms.forEach((el) => {
-    el.device = []
-  })
-}
+const cleanDevice = (rooms) => rooms.forEach((el) => { el.device = [] })
 
 const addRoom = async () => addDevice('salas', { nombre: newRoom.value })
 

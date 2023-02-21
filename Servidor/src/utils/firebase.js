@@ -32,6 +32,14 @@ export const dameDocs = (ref) => getDocs(collection(db, ref))
 export const dameDocsFiltro = (ref, campo, valor) =>
   getDocs(query(collection(db, ref), where(campo, '==', valor)))
 
+// Eliminacion de Documentos con un campo a elección
+export const borraDocsFiltro = async (ref, campo, valor) => {
+  const querySnapshot = await getDocs(query(collection(db, ref), where(campo, '==', valor)))
+  querySnapshot.forEach((doc) => {
+    deleteDoc(doc.ref)
+  })
+}
+
 // Escucha dinámica de la base de datos
 export const onDameSalas = (ref, callback) => onSnapshot(collection(db, ref), callback)
 
