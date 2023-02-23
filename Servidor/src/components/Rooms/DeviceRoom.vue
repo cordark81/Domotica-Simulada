@@ -51,7 +51,7 @@
 
 <script setup>
 
-import { actualizaDispositivo } from '../../utils/firebase'
+import { actualizaDispositivoCampo } from '../../utils/firebase'
 
 const props = defineProps({
   idDevice: { type: String },
@@ -61,7 +61,7 @@ const props = defineProps({
 const changeStatus = async () => {
   let status
   props.device.estado === 'on' ? status = 'off' : status = 'on'
-  await actualizaDispositivo('dispositivos', props.idDevice, { nombre: props.device.nombre, sala: props.device.sala, estado: status, tipo: props.device.tipo })
+  await actualizaDispositivoCampo('dispositivos', props.idDevice, { estado: status })
 }
 
 const info = (id) => window.open(`http://localhost:5174/${id}`, '_blank')

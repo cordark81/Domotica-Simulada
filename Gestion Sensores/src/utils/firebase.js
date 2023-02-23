@@ -10,7 +10,8 @@ import {
   getDoc,
   setDoc,
   query,
-  where
+  where,
+  updateDoc
 } from 'firebase/firestore'
 
 const firebaseConfig = {
@@ -46,6 +47,9 @@ export const dameDoc = (ref, id) => getDoc(doc(db, ref, id))
 
 // Actualizamos la reserva
 export const actualizaDispositivo = (ref, id, objeto) => setDoc(doc(db, ref, id), objeto)
+
+// Actualización dispositivo por un campo
+export const actualizaDispositivoCampo = (ref, id, objeto) => updateDoc(doc(db, ref, id), objeto)
 
 // Cambios de un documento
 export const onActualizaDispositivo = (ref, id, callback) => onSnapshot(doc(db, ref, id), callback)

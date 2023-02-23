@@ -50,7 +50,7 @@ const router = useRouter()
 const email = ref('')
 const password = ref('')
 
-const emits = defineEmits(['"CloseModal'])
+const emits = defineEmits(['CloseModal'])
 
 const closeModal = () => {
   emits('CloseModal')
@@ -59,16 +59,15 @@ const closeModal = () => {
 
 // Crea un nuevo usuario en la autentificacion de firebase
 
-const createNewUser = () => {
-  createUserWithEmailAndPassword(getAuth(), email.value, password.value)
-    .then((data) => {
-      console.log('Autentificación exitosa')
-      router.push('/dashboard')
-    })
-    .catch((error) => {
-      console.log(error.code)
-      alert(error.message)
-    })
+const createNewUser = async () => {
+  try {
+    await createUserWithEmailAndPassword(getAuth(), email.value, password.value)
+    console.log('Autentificación exitosa')
+    router.push('/dashboard')
+  } catch (error) {
+    console.log(error.code)
+    alert(error.message)
+  }
 }
 
 const resetNewUser = () => {

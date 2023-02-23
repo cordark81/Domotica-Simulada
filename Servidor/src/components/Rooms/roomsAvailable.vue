@@ -7,7 +7,7 @@
 <script setup>
 
 import { useRoomsAvailable } from '../../store/roomsAvailable'
-import { borraDispositivo, actualizaDispositivo } from '../../utils/firebase'
+import { borraDispositivo, actualizaDispositivoCampo } from '../../utils/firebase'
 
 const store = useRoomsAvailable()
 
@@ -22,14 +22,10 @@ const assignNewRoom = () => {
   const device = room[0].device
 
   device.forEach(element => {
-    const data = element.data
-    data.sala = props.name
-    actualizaDispositivo('dispositivos', element.id, data)
+    actualizaDispositivoCampo('dispositivos', element.id, { sala: props.name })
   })
 
   borraDispositivo('salas', room[0].id)
-  store.addTransferDevice([])
-  store.updateRooms([])
   emits('closeModal')
 }
 

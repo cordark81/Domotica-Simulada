@@ -10,7 +10,8 @@ import {
   getDoc,
   setDoc,
   query,
-  where
+  where,
+  updateDoc
 } from 'firebase/firestore'
 
 const firebaseConfig = {
@@ -52,8 +53,10 @@ export const borraDispositivo = (ref, id) => deleteDoc(doc(db, ref, id))
 // Buscamos un documento para su posterior modificación
 export const dameDoc = (ref, id) => getDoc(doc(db, ref, id))
 
-// Actualización dispositivos
+// Actualización dispositivos entero
 export const actualizaDispositivo = (ref, id, objeto) => setDoc(doc(db, ref, id), objeto)
 
+// Actualización dispositivo por un campo
+export const actualizaDispositivoCampo = (ref, id, objeto) => updateDoc(doc(db, ref, id), objeto)
 // Escucha dinámica de un documentos
 export const onCambioDoc = (ref, id, callback) => onSnapshot(doc(db, ref, id), callback)

@@ -1,26 +1,26 @@
 <template>
-    <div class="flex flex-row justify-between">
-        <button
-            class="flex ml-10 mt-4 w-32 h-12 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-            @click="handleSignOut" v-if="isLoggedIn">Desconectar </button>
-        <div>
-            <input type="text" input v-model="newRoom" class="h-12 mt-4 rounded-3xl text-center" />
-            <button
-                class="flex ml-10 mt-4 w-32 h-12 text-white bg-orange-400 hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                @click="addRoom">Añadir sala </button>
-        </div>
-
-        <h1 class="flex text-6xl text-center mb-10"> Dashboard</h1>
-
-        <div class="bg-white flex mr-10 mt-10 w-36 h-36 rounded-3xl" @drop="onDrop($event)" @dragenter.prevent
-            @dragover.prevent>
-            <img src="../assets/Imagenes/18297.png" alt="papelera">
-        </div>
-    </div>
-    <div class="flex flex-wrap justify-center gap-7 mt-14">
-        <CardRoom v-for="room in rooms" :key="room.nombre" :nameRoom="room.nombre" :device="room.device" :idRoom="room.id" :rooms="rooms" />
+  <div class="flex flex-row justify-between">
+    <button
+      class="flex ml-10 mt-4 w-32 h-12 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+      @click="handleSignOut" v-if="isLoggedIn">Desconectar </button>
+    <div>
+      <input type="text" input v-model="newRoom" class="h-12 mt-4 rounded-3xl text-center" />
+      <button
+        class="flex ml-10 mt-4 w-32 h-12 text-white bg-orange-400 hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+        @click="addRoom">Añadir sala </button>
     </div>
 
+    <h1 class="flex text-6xl text-center mb-10"> Dashboard</h1>
+
+    <div class="bg-white flex mr-10 mt-10 w-36 h-36 rounded-3xl" @drop="onDrop($event)" @dragenter.prevent
+      @dragover.prevent>
+      <img src="../assets/Imagenes/18297.png" alt="papelera">
+    </div>
+  </div>
+  <div class="flex flex-wrap justify-center gap-7 mt-14">
+    <CardRoom v-for="room in rooms" :key="room.nombre" :nameRoom="room.nombre" :device="room.device" :idRoom="room.id"
+      :rooms="rooms" />
+  </div>
 </template>
 
 <script setup>
@@ -52,6 +52,7 @@ onMounted(async () => {
     })
     onDameSalas('dispositivos', docs => {
       cleanDevice(rooms.value)
+      // Dándole vueltas a usar un filter
       docs.forEach((doc) => {
         rooms.value.forEach((room, index) => {
           if (room.nombre === doc.data().sala) {
@@ -65,13 +66,26 @@ onMounted(async () => {
 
 // Nos desconecta de la sesión
 
-const handleSignOut = () => signOut(auth).then(() => router.push('/'))
+const handleSignOut = async () => {
+  await signOut(auth)
+  router.push('/')
+}
 
 // Reset de dispositivos en la habitación
 
 const cleanDevice = (rooms) => rooms.forEach((el) => { el.device = [] })
 
-const addRoom = async () => addDevice('salas', { nombre: newRoom.value })
+const addRoom = async () => {
+  try {
+    if (newRoom.value.length === 0) {
+      throw 'nombre de sala vacio'
+    } else {
+      await addDevice('salas', { nombre: newRoom.value })
+    }
+  } catch (error) {
+    alert(error)
+  }
+}
 
 // Drop
 

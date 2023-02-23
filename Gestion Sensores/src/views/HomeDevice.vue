@@ -70,7 +70,7 @@
 
 import { ref, onBeforeMount, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { onActualizaDispositivo, actualizaDispositivo } from '../utils/firebase'
+import { onActualizaDispositivo, actualizaDispositivoCampo } from '../utils/firebase'
 
 const route = useRoute()
 const temp = ref()
@@ -93,14 +93,14 @@ onBeforeMount(async () => {
 const changeTemp = computed(() => device.value.temp === temp.value)
 
 const changeStatusTemp = async () => {
-  await actualizaDispositivo('dispositivos', route.params.id, { nombre: device.value.nombre, sala: device.value.sala, temp: temp.value, tipo: device.value.tipo })
+  await actualizaDispositivoCampo('dispositivos', route.params.id, { temp: temp.value })
   alert('actualizado')
 }
 
 const changeStatusOnOff = async () => {
   let status
   device.value.estado === 'on' ? status = 'off' : status = 'on'
-  await actualizaDispositivo('dispositivos', route.params.id, { nombre: device.value.nombre, sala: device.value.sala, estado: status, tipo: device.value.tipo })
+  await actualizaDispositivoCampo('dispositivos', route.params.id, { estado: status })
   messageInfo.value = 'Cambiando de estado'
   setTimeout(() => {
     messageInfo.value = ''

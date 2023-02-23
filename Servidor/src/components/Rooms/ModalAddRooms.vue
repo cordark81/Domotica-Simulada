@@ -38,7 +38,7 @@
                                     <div class="w-full text-center">
                                         <div>
                                             <!--zona de introducir formulario-->
-                                            <FormCreateRoom  @CloseModal="closeModal" :nameRoom="nameRoom"/>
+                                            <FormCreateRoom  @CloseModal="emits('CloseModal')" :nameRoom="nameRoom"/>
                                         </div>
                                     </div>
                                 </div>
@@ -60,8 +60,6 @@ defineProps({
 })
 
 const emits = defineEmits(['CloseModal'])
-
-const closeModal = () => emits('CloseModal')
 
 </script>
 
