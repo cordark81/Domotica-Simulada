@@ -3,12 +3,11 @@
     <div>
         <div class="w-full max-w-xs ml-8 ">
             <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" @submit.prevent="checkUserPassword">
-                <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Elige un
+                <label for="tipos" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Elige un
                     tipo</label>
                 <select v-model="select" id="tipos"
                     class="mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option value="sensor">Sensor</option>
-                    <option value="ejecutor">Ejecutor</option>
+                    <option v-for="tipo in tiposSensores" :key="tipo.nombre" :value=tipo.nombre>{{tipo.nombre}}</option>
                 </select>
                 <div class="mb-10">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="nameDevice">
@@ -40,8 +39,8 @@
 
 <script setup>
 
-import { ref } from 'vue'
-import { addDevice } from '../../utils/firebase'
+import { ref, onBeforeMount } from 'vue'
+import { addDevice, dameDocs } from '../../utils/firebase'
 
 const select = ref()
 const nameDevice = ref()
@@ -53,6 +52,8 @@ const props = defineProps({
 })
 
 const room = ref(props.nameRoom)
+
+const tiposSensores = ref([])
 
 const emits = defineEmits(['CloseModal'])
 
@@ -68,5 +69,15 @@ const acceptDevice = async () => {
     alert(error)
   }
 }
+
+onBeforeMount(async () => {
+  const tipos = await dameDocs('tipos')
+  tipos.forEach(element => {
+    tiposSensores.value.push(element.data())
+  })
+  console.log(tiposSensores.value)
+})
+
+// export const dameDocs = (ref) => getDocs(collection(db, ref))
 
 </script>

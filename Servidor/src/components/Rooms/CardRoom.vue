@@ -1,8 +1,12 @@
 <template>
     <div class="max-w-sm rounded-2xl overflow-hidden shadow-lg bg-blue-600 w-96 h-auto">
         <div class="flex flex-row justify-center">
-            <img class="w-16 h-16 ml-5 mt-5" src="../../assets/Imagenes/4792184.png" alt="Habitacion">
-            <div class="font-bold text-xl mb-2 ml-5 p-6 mt-5">{{ nameRoom }}</div>
+            <img class=" flex w-16 h-16 ml-10 mt-5" src="../../assets/Imagenes/4792184.png" alt="Habitacion">
+            <input v-model="name" class="w-48 font-bold text-xl mb-2 p-6 mt-5 bg-blue-600" :disabled="input"/>
+            <button v-if="input==true" @click="input=false"
+                class="flex w-24 h-12 mt-8 mr-10  text-white bg-orange-400 hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Cambiar</button>
+            <button v-if="input==false" @click="changeNameRoom"
+                class="flex w-24 h-12 mt-8 mr-10 text-white bg-red-600 hover:bg-red-400 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" >Aceptar</button>
         </div>
         <div class="px-6 py-4">
             <p class="text-gray-700 text-base">
@@ -30,13 +34,14 @@ import ModalAddRooms from './ModalAddRooms.vue'
 import ModalDeleteRoom from './ModalDeleteRoom.vue'
 import ModalRoomAvailable from './ModalRoomAvailable.vue'
 import { ref } from 'vue'
-import { borraDispositivo, borraDocsFiltro } from '../../utils/firebase'
+import { borraDispositivo, borraDocsFiltro, actualizaDispositivoCampo } from '../../utils/firebase'
 import { useRoomsAvailable } from '../../store/roomsAvailable'
 
 const dialog = ref()
 const dialogDelete = ref()
 const dialogAvailable = ref()
 const store = useRoomsAvailable()
+const input = ref(true)
 
 const props = defineProps({
   nameRoom: { type: String },
@@ -44,6 +49,8 @@ const props = defineProps({
   device: { type: Object },
   rooms: { type: Array }
 })
+
+const name = ref(props.nameRoom)
 
 // Drag and drop
 
@@ -66,6 +73,18 @@ const reassignDevices = () => {
   store.addTransferDevice(transferDevice)
   dialogDelete.value = false
   dialogAvailable.value = true
+}
+
+const changeNameRoom = () => {
+  try {
+    actualizaDispositivoCampo('salas', props.idRoom, { nombre: name.value })
+    props.device.forEach(element => {
+      actualizaDispositivoCampo('dispositivos', element.id, { sala: name.value })
+    })
+  } catch (error) {
+    console.log(error)
+  }
+  input.value = true
 }
 
 </script>
